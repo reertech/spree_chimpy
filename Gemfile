@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'spree', github: 'spree/spree', branch: '2-3-stable'
-gem 'spree_auth_devise', github: "spree/spree_auth_devise", branch: '2-3-stable'
+gem 'spree', '~> 3.7.0'
+gem 'spree_auth_devise', '~> 3.5'
 gem 'libnotify'
 gem 'fuubar'
 gem 'byebug'
