@@ -4,7 +4,7 @@ module Spree::Chimpy
     isolate_namespace Spree
     engine_name 'spree_chimpy'
 
-    config.autoload_paths += %W(#{config.root}/lib)
+    config.eager_load_paths += %W(#{config.root}/lib)
 
     initializer "spree_chimpy.environment", before: :load_config_initializers do |app|
       Spree::Chimpy::Config = Spree::Chimpy::Configuration.new
