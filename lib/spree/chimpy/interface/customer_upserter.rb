@@ -50,7 +50,7 @@ module Spree::Chimpy
           response = store_api_call
             .customers(customer_id)
             .retrieve(params: { "fields" => "id,email_address"})
-          update_cutomer_orders(response) if response.present? && response.body['id'].present?
+          update_cutomer_orders(response) if response.present? && response['id'].present?
         rescue Gibbon::MailChimpError => e
           # Customer Not Found, so create them
           response = store_api_call
@@ -62,8 +62,8 @@ module Spree::Chimpy
 
       def update_cutomer_orders(customer)
         store_api_call
-          .customers(customer.body['id'])
-          .update(body: data.merge(id: customer.body['id']))
+          .customers(customer['id'])
+          .update(body: data.merge(id: customer['id']))
       end
 
       def data
