@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version     = '2.0.0.alpha'
   s.summary     = 'MailChimp/Spree integration using the mailchimp gem'
   s.description = s.summary
-  s.required_ruby_version = '>= 2.6.3'
+  s.required_ruby_version = '>= 2.2.0'
 
   s.author    = 'Joshua Nussbaum'
   s.email     = 'josh@godynamo.com'
@@ -24,9 +24,9 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'capybara', '~> 3.22'
   s.add_development_dependency 'poltergeist'
-  s.add_development_dependency 'factory_bot', '~> 5.0'
+  s.add_development_dependency 'factory_bot', '~> 4.11'
   s.add_development_dependency 'shoulda-matchers', '~> 4.1'
-  s.add_development_dependency 'sqlite3', '~> 1.4.1'
+  s.add_development_dependency 'sqlite3', '~> 1.3.6'
   s.add_development_dependency 'simplecov', '~> 0.16.1'
   s.add_development_dependency 'database_cleaner', '~> 1.7.0'
   s.add_development_dependency 'coffee-rails', '~> 5.0.0'
