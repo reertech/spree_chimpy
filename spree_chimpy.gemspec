@@ -18,11 +18,11 @@ Gem::Specification.new do |s|
   s.requirements << 'none'
 
   s.add_dependency 'spree_core', '~> 3.7'
-  s.add_dependency 'gibbon', '~> 2.2'
+  s.add_dependency 'gibbon'
 
-  s.add_development_dependency 'rspec-rails', '~> 3.8'
+  s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'rubocop'
-  s.add_development_dependency 'capybara', '~> 3.22'
+  s.add_development_dependency 'capybara'
   s.add_development_dependency 'poltergeist'
   s.add_development_dependency 'factory_bot', '~> 4.11'
   s.add_development_dependency 'shoulda-matchers', '~> 4.1'

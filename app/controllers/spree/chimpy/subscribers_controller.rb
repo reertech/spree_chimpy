@@ -17,7 +17,7 @@ class Spree::Chimpy::SubscribersController < ApplicationController
 
   private
 
-    def subscriber_params
-      params.require(:chimpy_subscriber).permit(:email, :subscribed)
-    end
+  def subscriber_params
+    params.require(:chimpy_subscriber).permit(:email, :subscribed)
+  end
 end
