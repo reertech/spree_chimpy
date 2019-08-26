@@ -72,7 +72,7 @@ module Spree::Chimpy
           response = store_api_call
             .carts(@order.number)
             .retrieve(params: { "fields" => "id" })
-          !response["id"].nil?
+          !response.body["id"].nil?
         rescue Gibbon::MailChimpError => e
           log "Cart #{@order.number} Not Found"
           false

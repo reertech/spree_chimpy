@@ -39,7 +39,7 @@ namespace :spree_chimpy do
         emails = Spree.user_class.where(subscribed: true).pluck(:email)
         puts "Segmenting all subscribed users"
         response = Spree::Chimpy.list.segment(emails)
-        response["errors"].try :each do |error|
+        response.body["errors"].try :each do |error|
           puts "Error #{error["code"]} with email: #{error["email"]} \n msg: #{error["msg"]}"
         end
         puts "segmented #{response["success"] || 0} out of #{emails.size}"
@@ -56,7 +56,7 @@ namespace :spree_chimpy do
       response = Spree::Chimpy.list.info(email)
       print '.'
 
-      response["errors"].try :each do |error|
+      response.body["errors"].try :each do |error|
         puts "Error #{error['error']["code"]} with email: #{error['email']["email"]} \n
               msg: #{error["error"]}"
       end
