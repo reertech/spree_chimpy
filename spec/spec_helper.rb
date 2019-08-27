@@ -20,7 +20,8 @@ require 'shoulda-matchers'
 require 'ffaker'
 require 'capybara/poltergeist'
 
-Capybara.javascript_driver = :poltergeist
+Capybara.default_driver = :selenium_chrome
+Capybara.javascript_driver = :selenium_chrome
 
 Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each { |f| require f }
 RSpec.configure do |config|

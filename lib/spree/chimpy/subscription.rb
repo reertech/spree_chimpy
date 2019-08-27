@@ -3,7 +3,7 @@ module Spree::Chimpy
     delegate :configured?, :enqueue, to: Spree::Chimpy
 
     def initialize(model)
-      @model      = model
+      @model = model
     end
 
     def subscribe
@@ -28,7 +28,8 @@ module Spree::Chimpy
       end
     end
 
-  private
+    private
+
     def defer(event)
       enqueue(event, @model)
     end

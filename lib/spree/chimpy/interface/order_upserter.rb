@@ -70,9 +70,9 @@ module Spree::Chimpy
       def cart_exist?
         begin
           response = store_api_call
-            .carts(@order.number)
-            .retrieve(params: { "fields" => "id" })
-          !response.body["id"].nil?
+                       .carts(@order.number)
+                       .retrieve(params: { "fields" => "id" })
+          !response["id"].nil?
         rescue Gibbon::MailChimpError => e
           log "Cart #{@order.number} Not Found"
           false
@@ -81,17 +81,17 @@ module Spree::Chimpy
 
       def remove_cart_from_mailchimp
         response = store_api_call
-                    .carts(@order.number).delete
+                     .carts(@order.number).delete
       end
 
       def order_variant_hash(line_item)
         variant = line_item.variant
         {
           id: "line_item_#{line_item.id}",
-          product_id:    Products.mailchimp_product_id(variant),
+          product_id: Products.mailchimp_product_id(variant),
           product_variant_id: Products.mailchimp_variant_id(variant),
-          price:          variant.price.to_f,
-          quantity:           line_item.quantity
+          price: variant.price.to_f,
+          quantity: line_item.quantity
         }
       end
 
@@ -99,16 +99,16 @@ module Spree::Chimpy
         source = @order.source
 
         data = {
-          id:                @order.number,
-          lines:             order_lines,
-          order_total:       @order.total.to_f,
-          financial_status:  @order.payment_state || "",
+          id: @order.number,
+          lines: order_lines,
+          order_total: @order.total.to_f,
+          financial_status: @order.payment_state || "",
           fulfillment_status: @order.shipment_state || "",
-          currency_code:     @order.currency,
-          processed_at_foreign:  @order.completed_at ? @order.completed_at.to_formatted_s(:db) : "",
+          currency_code: @order.currency,
+          processed_at_foreign: @order.completed_at ? @order.completed_at.to_formatted_s(:db) : "",
           updated_at_foreign: @order.updated_at.to_formatted_s(:db),
-          shipping_total:    @order.ship_total.to_f,
-          tax_total:         @order.try(:included_tax_total).to_f + @order.try(:additional_tax_total).to_f,
+          shipping_total: @order.ship_total.to_f,
+          tax_total: @order.try(:included_tax_total).to_f + @order.try(:additional_tax_total).to_f,
           customer: {
             id: customer_id
           }
@@ -131,11 +131,11 @@ module Spree::Chimpy
       def cart_hash
         source = @order.source
         data = {
-          id:                @order.number,
-          lines:             order_lines,
-          order_total:       @order.total.to_f,
-          currency_code:     @order.currency,
-          tax_total:         @order.try(:included_tax_total).to_f + @order.try(:additional_tax_total).to_f,
+          id: @order.number,
+          lines: order_lines,
+          order_total: @order.total.to_f,
+          currency_code: @order.currency,
+          tax_total: @order.try(:included_tax_total).to_f + @order.try(:additional_tax_total).to_f,
           checkout_url: checkout_url,
           customer: {
             id: customer_id
@@ -151,8 +151,8 @@ module Spree::Chimpy
 
       def checkout_url
         URI::HTTP.build({
-          host: Rails.application.routes.default_url_options[:host],
-          :path => "/cart"}
+                          host: Rails.application.routes.default_url_options[:host],
+                          :path => "/cart" }
         ).to_s
       end
     end

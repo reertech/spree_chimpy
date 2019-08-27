@@ -3,20 +3,20 @@ require 'spec_helper'
 describe Spree::Chimpy::Subscription do
 
   context "mail chimp enabled" do
-    let(:interface)    { double(:interface) }
+    let(:interface) { double(:interface) }
 
     before do
-      Spree::Chimpy::Config.list_name  = 'Members'
-      Spree::Chimpy::Config.merge_vars = {'EMAIL' => :email}
+      Spree::Chimpy::Config.list_name = 'Members'
+      Spree::Chimpy::Config.merge_vars = { 'EMAIL' => :email }
       Spree::Chimpy.stub(list: interface)
     end
 
     context "subscribing users" do
-      let(:user)         { build(:user, subscribed: true) }
+      let(:user) { build(:user, subscribed: true) }
       let(:subscription) { described_class.new(user) }
 
       before do
-        Spree::Chimpy::Config.merge_vars = {'EMAIL' => :email, 'SIZE' => :size, 'HEIGHT' => :height}
+        Spree::Chimpy::Config.merge_vars = { 'EMAIL' => :email, 'SIZE' => :size, 'HEIGHT' => :height }
 
         def user.size
           '10'
@@ -28,19 +28,19 @@ describe Spree::Chimpy::Subscription do
       end
 
       it "subscribes users" do
-        interface.should_receive(:subscribe).with(user.email, {'SIZE' => '10', 'HEIGHT' => '20'}, customer: true)
-        user.save
+        expect(interface).to receive(:subscribe).with(user.email, { 'SIZE' => '10', 'HEIGHT' => '20' }, customer: true)
+        user.save!
       end
     end
 
     context "subscribing subscribers" do
-      let(:subscriber)   { Spree::Chimpy::Subscriber.new(email: "test@example.com", subscribed: true) }
+      let(:subscriber) { Spree::Chimpy::Subscriber.new(email: "test@example.com", subscribed: true) }
       let(:subscription) { described_class.new(subscriber) }
 
       it "subscribes subscribers" do
-        interface.should_receive(:subscribe).with(subscriber.email, {}, customer: false)
-        interface.should_not_receive(:segment)
-        subscriber.save
+        expect(interface).to receive(:subscribe).with(subscriber.email, {}, customer: false)
+        expect(interface).not_to receive(:segment)
+        subscriber.save!
       end
     end
 
@@ -98,7 +98,7 @@ describe Spree::Chimpy::Subscription do
 
       context "#resubscribe" do
         it "subscribes the user" do
-          interface.should_receive(:subscribe).with(user.email, {}, {customer: true})
+          interface.should_receive(:subscribe).with(user.email, {}, { customer: true })
           user.subscribed = true
           subscription.resubscribe
         end
@@ -122,7 +122,7 @@ describe Spree::Chimpy::Subscription do
           let(:user) { create(:user, subscribed: true, size: 10, height: 20) }
 
           before do
-            Spree::Chimpy::Config.merge_vars = {'EMAIL' => :email, 'SIZE' => :size, 'HEIGHT' => :height}
+            Spree::Chimpy::Config.merge_vars = { 'EMAIL' => :email, 'SIZE' => :size, 'HEIGHT' => :height }
 
             Spree::User.class_eval do
               attr_accessor :size, :height
@@ -132,7 +132,7 @@ describe Spree::Chimpy::Subscription do
           it "subscribes the user once again" do
             user.size += 5
             user.height += 10
-            interface.should_receive(:subscribe).with(user.email, {"SIZE"=> user.size.to_s, "HEIGHT"=> user.height.to_s}, {:customer=>true})
+            interface.should_receive(:subscribe).with(user.email, { "SIZE" => user.size.to_s, "HEIGHT" => user.height.to_s }, { :customer => true })
             subscription.resubscribe
           end
         end

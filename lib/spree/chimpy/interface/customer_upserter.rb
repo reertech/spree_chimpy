@@ -6,6 +6,7 @@ module Spree::Chimpy
       def initialize(order)
         @order = order
       end
+
       # CUSTOMER will be pulled first from the MC_EID if present on the order.source
       # IF that is not found, customer will be found by our Customer ID
       # IF that is not found, customer is created with the order email and our Customer ID
@@ -25,10 +26,10 @@ module Spree::Chimpy
         if email
           begin
             response = store_api_call
-              .customers
-              .retrieve(params: { "fields" => "customers.id", "email_address" => email })
+                         .customers
+                         .retrieve(params: { "fields" => "customers.id", "email_address" => email })
 
-            data = response.body["customers"].first
+            data = response["customers"].first
             #data["id"] if data
             if data
               update_cutomer_orders(data["id"])
@@ -48,14 +49,14 @@ module Spree::Chimpy
         customer_id = self.class.mailchimp_customer_id(customer_id)
         begin
           response = store_api_call
-            .customers(customer_id)
-            .retrieve(params: { "fields" => "id,email_address"})
+                       .customers(customer_id)
+                       .retrieve(params: { "fields" => "id,email_address" })
           update_cutomer_orders(response) if response.present? && response['id'].present?
         rescue Gibbon::MailChimpError => e
           # Customer Not Found, so create them
           response = store_api_call
-            .customers
-            .create(body: data.merge(id: customer_id))
+                       .customers
+                       .create(body: data.merge(id: customer_id))
         end
         customer_id
       end

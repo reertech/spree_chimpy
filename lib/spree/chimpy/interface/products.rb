@@ -50,9 +50,9 @@ module Spree::Chimpy
 
       def product_exists_in_mailchimp?
         response = store_api_call
-          .products(@variant.product.id)
-          .retrieve(params: { "fields" => "id" })
-        !response.body["id"].nil?
+                     .products(@variant.product.id)
+                     .retrieve(params: { "fields" => "id" })
+        !response["id"].nil?
       rescue Gibbon::MailChimpError => e
         false
       end
@@ -109,8 +109,8 @@ module Spree::Chimpy
           product_url(product)
         else
           URI::HTTP.build({
-            host: Rails.application.routes.default_url_options[:host],
-            :path => "/products/#{product.slug}"}
+                            host: Rails.application.routes.default_url_options[:host],
+                            :path => "/products/#{product.slug}"}
           ).to_s
         end
       end

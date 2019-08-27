@@ -18,9 +18,11 @@ Gem::Specification.new do |s|
   s.requirements << 'none'
 
   s.add_dependency 'spree_core', '~> 3.7'
-  s.add_dependency 'gibbon'
+  s.add_dependency 'gibbon', '~> 2.2'
 
   s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'puma'
+  s.add_development_dependency 'selenium-webdriver'
   s.add_development_dependency 'rubocop'
   s.add_development_dependency 'capybara'
   s.add_development_dependency 'poltergeist'

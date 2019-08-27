@@ -1,16 +1,14 @@
-require 'digest'
-
 module Spree::Chimpy
   module Interface
     class List
       delegate :log, to: Spree::Chimpy
 
       def initialize(list_name, segment_name, double_opt_in, send_welcome_email, list_id)
-        @list_id       = list_id
-        @segment_name  = segment_name
+        @list_id = list_id
+        @segment_name = segment_name
         @double_opt_in = double_opt_in
         @send_welcome_email = send_welcome_email
-        @list_name     = list_name
+        @list_name = list_name
       end
 
       def api_call(list_id = nil)
@@ -59,10 +57,10 @@ module Spree::Chimpy
         log "Checking customer id for #{mc_eid} from #{@list_name}"
         begin
           response = api_list_call
-            .members
-            .retrieve(params: { "unique_email_id" => mc_eid, "fields" => "members.id,members.email_address" })
+                       .members
+                       .retrieve(params: { "unique_email_id" => mc_eid, "fields" => "members.id,members.email_address" })
 
-          member_data = response.body["members"].first
+          member_data = response["members"].first
           member_data["email_address"] if member_data
         rescue Gibbon::MailChimpError => ex
           nil
@@ -75,10 +73,10 @@ module Spree::Chimpy
         #maximum of 50 emails allowed to be passed in
         begin
           response = api_member_call(email)
-            .retrieve(params: { "fields" => "email_address,merge_fields,status"})
+                       .retrieve(params: { "fields" => "email_address,merge_fields,status" })
 
           response = response.symbolize_keys
-          response.merge(email: response.body[:email_address])
+          response.merge(email: response[:email_address])
         rescue Gibbon::MailChimpError
           {}
         end
@@ -89,9 +87,9 @@ module Spree::Chimpy
         log "Finding merge vars for #{@list_name}"
 
         response = api_list_call
-          .merge_fields
-          .retrieve(params: { "fields" => "merge_fields.tag,merge_fields.name"})
-        response.body["merge_fields"].map { |record| record['tag'] }
+                     .merge_fields
+                     .retrieve(params: { "fields" => "merge_fields.tag,merge_fields.name" })
+        response["merge_fields"].map { |record| record['tag'] }
       end
 
       def add_merge_var(tag, description)
@@ -108,8 +106,8 @@ module Spree::Chimpy
 
       def find_list_id(name)
         response = api_call
-          .retrieve(params: {"fields" => "lists.id,lists.name"})
-        list = response.body["lists"].detect { |r| r["name"] == name }
+                     .retrieve(params: { "fields" => "lists.id,lists.name" })
+        list = response["lists"].detect { |r| r["name"] == name }
         list["id"] if list
       end
 
@@ -126,15 +124,15 @@ module Spree::Chimpy
       def create_segment
         log "Creating segment #{@segment_name}"
 
-        result = api_list_call.segments.create(body: { name: @segment_name, static_segment: []})
+        result = api_list_call.segments.create(body: { name: @segment_name, static_segment: [] })
         @segment_id = result["id"]
       end
 
       def find_segment_id
         response = api_list_call
-          .segments
-          .retrieve(params: {"fields" => "segments.id,segments.name"})
-        segment = response.body["segments"].detect {|segment| segment['name'].downcase == @segment_name.downcase }
+                     .segments
+                     .retrieve(params: { "fields" => "segments.id,segments.name" })
+        segment = response["segments"].detect { |segment| segment['name'].downcase == @segment_name.downcase }
 
         segment['id'] if segment
       end
