@@ -4,10 +4,9 @@ describe 'Subscribers' do
 
   context 'with valid subscription' do
     it 'redirects to referer' do
-      post '/subscribers', params: {
-        chimpy_subscriber: { email: 'foo2@bar.com', subscribed: true },
-        referer: 'http://foo.bar'
-      }
+      post '/subscribers',
+           params: { chimpy_subscriber: { email: 'foo2@bar.com', subscribed: true } },
+           headers: { 'Referer' => 'http://foo.bar' }
       expect(response).to be_redirect
       expect(response.location).to eq('http://foo.bar')
     end
@@ -25,7 +24,7 @@ describe 'Subscribers' do
 
   context 'with json response' do
     it 'returns 200 with json data' do
-      headers = { "ACCEPT" => "application/json" }
+      headers = { "Accept" => "application/json" }
       post '/subscribers', params: { chimpy_subscriber: { email: 'foo2@bar.com', subscribed: true } }, headers: headers
 
       expect(response).to be_success
